@@ -4,7 +4,10 @@ An intelligent, full-stack resume ranking system that leverages semantic embeddi
 
 ## 📺 Demo
 
-<video src="https://github.com/anjanvikas/AI-Resume-Ranker/raw/main/uploads/JobrankerDemo.mp4" width="100%" controls></video>
+> ▶️ **[Click here to watch the full demo video](uploads/JobrankerDemo.mp4)**
+>
+> *(To embed a playable video player, upload the `.mp4` via the GitHub web editor and paste the generated URL here)*
+
 
 ## 🌟 Key Features
 
