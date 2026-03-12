@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeRank — Intelligent Resume Screening</title>
+    <meta name="description"
+        content="AI-powered resume ranking system that evaluates candidates against your job description.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <!-- ─── Header ──────────────────────────────────────── -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <rect width="28" height="28" rx="7" fill="url(#logo-grad)" />
+                    <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28">
+                            <stop stop-color="#6366f1" />
+                            <stop offset="1" stop-color="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>ResumeRank</span>
+            </div>
+            <div class="header-right">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">🌙</button>
+                <div class="user-menu" id="user-menu">
+                    <img class="user-avatar" id="user-avatar" src="" alt="User" />
+                    <div class="user-dropdown" id="user-dropdown">
+                        <p class="user-name" id="user-name"></p>
+                        <p class="user-email" id="user-email"></p>
+                        <hr class="dropdown-divider">
+                        <button class="dropdown-item" id="change-key-btn">🔑 Change API Key</button>
+                        <button class="dropdown-item" id="show-tutorial-btn">📖 View Tutorial</button>
+                        <hr class="dropdown-divider">
+                        <button class="dropdown-item danger" id="logout-btn">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ─── Main Content ────────────────────────────────── -->
+    <main class="main">
+
+        <!-- Hero Section -->
+        <section class="hero" id="hero-section">
+            <h1 class="hero-title">Find the perfect candidate.<br><span class="gradient-text">Instantly.</span></h1>
+            <p class="hero-subtitle">Paste a job description, upload resumes, and let AI rank your candidates by
+                relevance, skills, and experience.</p>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section" id="upload-section">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-badge">Step 1</span>
+                    <h2 class="card-title">Job Description</h2>
+                </div>
+                <textarea id="jd-input" class="jd-textarea" placeholder="Paste the full job description here..."
+                    rows="8"></textarea>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-badge">Step 2</span>
+                    <h2 class="card-title">Upload Resumes</h2>
+                </div>
+                <div class="dropzone" id="dropzone">
+                    <div class="dropzone-content">
+                        <svg class="dropzone-icon" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p class="dropzone-text">Drop files here or <span class="dropzone-link">browse</span></p>
+                        <p class="dropzone-hint">ZIP archive or individual PDF, DOCX, TXT files · Up to 200 resumes</p>
+                    </div>
+                    <input type="file" id="file-input" multiple accept=".pdf,.docx,.doc,.txt,.zip" hidden>
+                </div>
+                <div class="file-list" id="file-list"></div>
+            </div>
+
+            <button class="btn-primary" id="analyze-btn" disabled>
+                <span class="btn-text">Analyze Resumes</span>
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="progress-section hidden" id="progress-section">
+            <div class="progress-card">
+                <div class="progress-spinner"></div>
+                <h2 class="progress-title" id="progress-title">Parsing resumes...</h2>
+                <p class="progress-detail" id="progress-detail">Extracting text from uploaded files</p>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+                <p class="progress-count" id="progress-count"></p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section hidden" id="results-section">
+            <div class="results-header">
+                <div>
+                    <h2 class="results-title">Rankings</h2>
+                    <p class="results-subtitle" id="results-subtitle"></p>
+                </div>
+                <div class="results-actions">
+                    <button class="btn-secondary" id="export-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Export CSV
+                    </button>
+                    <button class="btn-secondary" id="new-search-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        New Analysis
+                    </button>
+                </div>
+            </div>
+            <div class="results-grid" id="results-grid"></div>
+            <div class="all-resumes-section" id="all-resumes-section">
+                <h3 class="section-heading">All Resumes — Embedding Scores</h3>
+                <p class="section-desc">Quick similarity scores for all uploaded resumes (Stage 2 only)</p>
+                <div class="table-wrap">
+                    <table class="data-table" id="all-resumes-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Resume</th>
+                                <th>Similarity Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-resumes-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ─── Footer ──────────────────────────────────────── -->
+    <footer class="footer">
+        <p>Built with FastAPI + Claude · Multi-stage AI Pipeline</p>
+    </footer>
+
+    <!-- ─── API Key Modal ───────────────────────────────── -->
+    <div class="modal-overlay hidden" id="apikey-overlay">
+        <div class="modal" id="apikey-modal">
+            <div class="modal-body" style="padding:36px">
+                <div style="text-align:center; margin-bottom:24px;">
+                    <span style="font-size:2.5rem;">🔑</span>
+                </div>
+                <h2
+                    style="text-align:center; font-size:1.5rem; font-weight:700; letter-spacing:-0.03em; margin-bottom:8px;">
+                    Set Your Claude API Key</h2>
+                <p
+                    style="text-align:center; color:var(--text-secondary); font-size:0.9375rem; margin-bottom:24px; line-height:1.6;">
+                    Your key is encrypted and stored securely. It's never shared or logged.
+                    <br><a href="https://console.anthropic.com/settings/keys" target="_blank"
+                        style="color:var(--accent);">Get a key from Anthropic →</a>
+                </p>
+                <input type="password" id="apikey-input" class="jd-textarea" placeholder="sk-ant-api03-..."
+                    style="height:48px; font-family:monospace; font-size:0.875rem;">
+                <button class="btn-primary" id="apikey-save" style="margin-top:16px;">
+                    <span class="btn-text">Save & Continue</span>
+                </button>
+                <p id="apikey-error" style="color:var(--red); font-size:0.8125rem; text-align:center; margin-top:12px;">
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Interactive Tour (injected by JS) ───────────── -->
+    <div id="tour-root"></div>
+
+    <!-- ─── Candidate Detail Modal ──────────────────────── -->
+    <div class="modal-overlay hidden" id="modal-overlay">
+        <div class="modal" id="modal">
+            <button class="modal-close" id="modal-close">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
