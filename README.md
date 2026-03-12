@@ -2,6 +2,10 @@
 
 An intelligent, full-stack resume ranking system that leverages semantic embeddings and Large Language Models (LLMs) to automate the candidate screening process.
 
+## 📺 Demo
+
+![AI Resume Ranker Demo](uploads/JobrankerDemo.mp4)
+
 ## 🌟 Key Features
 
 - **2-Stage AI Pipeline**: 
