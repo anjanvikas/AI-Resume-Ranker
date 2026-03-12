@@ -4,7 +4,7 @@ An intelligent, full-stack resume ranking system that leverages semantic embeddi
 
 ## 📺 Demo
 
-![AI Resume Ranker Demo](uploads/JobrankerDemo.mp4)
+<video src="uploads/JobrankerDemo.mp4" width="100%" controls></video>
 
 ## 🌟 Key Features
 
