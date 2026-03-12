@@ -5,8 +5,6 @@ An intelligent, full-stack resume ranking system that leverages semantic embeddi
 ## 📺 Demo
 
 > ▶️ **[Click here to watch the full demo video](uploads/JobrankerDemo.mp4)**
->
-> *(To embed a playable video player, upload the `.mp4` via the GitHub web editor and paste the generated URL here)*
 
 
 ## 🌟 Key Features
